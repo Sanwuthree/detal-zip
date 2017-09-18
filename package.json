@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/Sanwuthree/detal-zip#readme",
   "dependencies": {
-    "archiver": "^2.0.3"
+    "adm-zip": "^0.4.7",
+    "archiver": "^2.0.3",
+    "list-dir": "^1.2.0",
+    "unzip": "^0.1.11"
   }
 }
