@@ -7,7 +7,12 @@
 npm install detal-zip
 ~~~
 ## Useage
-~~~ javascript
+~~~javascript
 const cm=require("detal-zip");
-cm.detal("detal2.zip","detal1.zip","out.zip")
+
+cm.detal("a2.zip","a1.zip","out.zip")
+
+cm.on("prograss",(compared,total,filename)=>{
+    console.log(compared,total,filename)
+})
 ~~~
