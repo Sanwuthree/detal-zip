@@ -8,6 +8,6 @@ npm install detal-zip
 ~~~
 ## Useage
 ~~~ javascript
-const cm=require("./compare");
+const cm=require("detal-zip");
 cm.detal("detal2.zip","detal1.zip","out.zip")
 ~~~

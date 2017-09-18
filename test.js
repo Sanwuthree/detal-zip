@@ -1,2 +1,2 @@
 const cm=require("./compare");
-cm.detal("detal2.zip","detal1.zip","out.zip")
+cm.detal("a2.zip","a1.zip","out.zip")
