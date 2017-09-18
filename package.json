@@ -19,7 +19,9 @@
   "dependencies": {
     "adm-zip": "^0.4.7",
     "archiver": "^2.0.3",
+    "crypto": "^1.0.1",
     "list-dir": "^1.2.0",
+    "md5": "^2.2.1",
     "unzip": "^0.1.11"
   }
 }
