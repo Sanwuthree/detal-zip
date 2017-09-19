@@ -1,6 +1,6 @@
 {
   "name": "detal-zip",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "",
   "main": "compare.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "url": "https://github.com/Sanwuthree/detal-zip/issues"
   },
   "homepage": "https://github.com/Sanwuthree/detal-zip#readme",
-  "dependencies": {
+  "devDependencies": {
     "archiver": "^2.0.3",
     "list-dir": "^1.2.0",
     "md5": "^2.2.1",

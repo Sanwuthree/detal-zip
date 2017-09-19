@@ -11,29 +11,48 @@ class Com extends events.EventEmitter {
     constructor() {
         super();
     }
+    throwMessage(msg){
+        this.emit("throw-message",msg)
+    }
     detal(newzip, oldzip, outzip) {
+        this.throwMessage("__dirname="+__dirname)
         let newdirname = path.basename(newzip, ".zip");
         let olddirname = path.basename(oldzip, ".zip");
+        newdirname=path.join("tmp",newdirname);
+        olddirname=path.join("tmp",olddirname);
+        this.throwMessage("newdirname="+newdirname)
+        this.throwMessage("olddirname="+olddirname)
         let isOldZipExtract = false;
         let isNewZipExtract = false;
         let outzipstream = fs.createWriteStream(outzip);
         let archive = archiver("zip");
         archive.pipe(outzipstream);
-        console.log("Extracting files.....")
+        this.throwMessage("Extracting files.....");
+        if (fs.existsSync(newdirname)) {
+            deleteall(newdirname);
+        }
+        if (fs.existsSync(olddirname)) {
+            deleteall(olddirname)
+        }
         fs.createReadStream(oldzip).pipe(unzip.Extract({ path: olddirname })).on("close", () => {
             isOldZipExtract = true;
+            this.throwMessage("old zip file extracted")
             if (isNewZipExtract) {
-                compare_files(newdirname, olddirname, archive);
+                this.compare_files(newdirname, olddirname, archive);
             }
+        }).on("data",(d)=>{
+            this.throwMessage("data=>")
         })
         fs.createReadStream(newzip).pipe(unzip.Extract({ path: newdirname })).on("close", () => {
             isNewZipExtract = true;
+            this.throwMessage("new zip file extracted")
             if (isOldZipExtract) {
                 this.compare_files(newdirname, olddirname, archive);
             }
         })
     }
     compare_files(new_dirname, old_dirname, archive) {
+        this.throwMessage("Start Compare")
         let f2files = listdir.sync(new_dirname);
         const count = f2files.length;
         let it = 0;
@@ -51,34 +70,34 @@ class Com extends events.EventEmitter {
                     archive.file(new_file_path, { name: element })
                 }
                 it++;
-                //console.log(it + "/" + count + "   " + new_file_path);
-                this.emit("prograss",it,count,new_file_path);
+                //this.throwMessage(it + "/" + count + "   " + new_file_path);
+                this.emit("prograss", it, count, new_file_path);
                 if (it == count) {
                     archive.finalize();
-                    setTimeout( ()=> {
-                        this.deleteall(new_dirname);
-                        this.deleteall(old_dirname);
-                    }, 1000);
+                    setTimeout(() => {
+                        deleteall(new_dirname);
+                        deleteall(old_dirname);
+                    }, 2000);
                 }
             })
         });
     }
-    deleteall(path) {
-        var files = [];
-        if (fs.existsSync(path)) {
-            files = fs.readdirSync(path);
-            files.forEach(function (file, index) {
-                var curPath = path + "/" + file;
-                if (fs.statSync(curPath).isDirectory()) { // recurse  
-                    deleteall(curPath);
-                } else { // delete file  
-                    fs.unlinkSync(curPath);
-                }
-            });
-            fs.rmdirSync(path);
-        }
-    };
 }
+function deleteall(path) {
+    var files = [];
+    if (fs.existsSync(path)) {
+        files = fs.readdirSync(path);
+        files.forEach(function (file, index) {
+            var curPath = path + "/" + file;
+            if (fs.statSync(curPath).isDirectory()) { // recurse  
+                deleteall(curPath);
+            } else { // delete file  
+                fs.unlinkSync(curPath);
+            }
+        });
+        fs.rmdirSync(path);
+    }
+};
 
 
 
